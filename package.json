@@ -1,0 +1,23 @@
+{
+  "name": "free-ai-assistant",
+  "displayName": "Free AI Assistant",
+  "description": "Cérebro de IA integrado com Failover (Gemini + Ollama) e Claude Code System Prompt",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "meu-copilot.perguntar",
+        "title": "Cérebro IA: Fazer Pergunta/Solicitação"
+      }
+    ]
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "compile": "tsc -p ./",
+    "check": "npm run typecheck && npm run compile"
+  }
+}
