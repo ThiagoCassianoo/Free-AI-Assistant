@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import { BrainConnector } from './BrainConnector';
 import { RouterClient } from './RouterClient';
 import { ProjectContext } from './ProjectContext';
+import { TerminalExecutor } from './TerminalExecutor';
+import { FileEditor } from './FileEditor';
 
 interface ChatTurn { role: string; content: string; }
 
@@ -9,6 +11,8 @@ export class UnifiedHarness {
     private brainConnector: BrainConnector;
     private routerClient: RouterClient;
     private projectContext: ProjectContext;
+    public terminalExecutor: TerminalExecutor;
+    public fileEditor: FileEditor;
     private history: ChatTurn[] = [];
     private projectSummaryCache: string | null = null;
 
@@ -16,6 +20,8 @@ export class UnifiedHarness {
         this.brainConnector = new BrainConnector();
         this.routerClient = new RouterClient();
         this.projectContext = new ProjectContext();
+        this.terminalExecutor = new TerminalExecutor();
+        this.fileEditor = new FileEditor();
     }
 
     private getActiveEditorContext(): string {
