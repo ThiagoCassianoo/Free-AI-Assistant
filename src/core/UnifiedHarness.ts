@@ -21,10 +21,10 @@ export class UnifiedHarness {
         const context = this.getActiveEditorContext();
         const payload = this.brainConnector.buildPayload(userPrompt, context);
 
-        const response = await fetch("http://localhost:20128/v1/chat/completions", {
+        const response = await fetch("http://localhost:20127/api/v1/chat/completions", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: [{ role: "user", content: payload }] })
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-7d2ff0b628912451-mmk5h3-254d8462" },
+            body: JSON.stringify({ model: "groq/llama-3.3-70b-versatile", stream: false, messages: [{ role: "user", content: payload }] })
         });
 
         if (!response.ok) throw new Error("9router indisponível. Verifique se está rodando (npm start).");
