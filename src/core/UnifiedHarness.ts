@@ -24,7 +24,7 @@ export class UnifiedHarness {
         const response = await fetch("http://localhost:20127/api/v1/chat/completions", {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": "Bearer sk-7d2ff0b628912451-mmk5h3-254d8462" },
-            body: JSON.stringify({ model: "groq/llama-3.3-70b-versatile", stream: false, messages: [{ role: "user", content: payload }] })
+            body: JSON.stringify({ model: "TESTE1", stream: false, messages: [{ role: "user", content: payload }] })
         });
 
         if (!response.ok) throw new Error("9router indisponível. Verifique se está rodando (npm start).");
