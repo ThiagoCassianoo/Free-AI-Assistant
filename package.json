@@ -19,5 +19,10 @@
     "typecheck": "tsc --noEmit",
     "compile": "tsc -p ./",
     "check": "npm run typecheck && npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/vscode": "^1.125.0",
+    "typescript": "^7.0.2"
   }
 }
