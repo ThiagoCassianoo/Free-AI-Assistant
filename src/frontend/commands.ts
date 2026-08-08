@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { UnifiedHarness } from '../core/UnifiedHarness';
+import { UnifiedHarness } from '../backend/core/UnifiedHarness';
 
 export function registerCommands(context: vscode.ExtensionContext, harness: UnifiedHarness) {
     let askCommand = vscode.commands.registerCommand('meu-copilot.perguntar', async () => {
