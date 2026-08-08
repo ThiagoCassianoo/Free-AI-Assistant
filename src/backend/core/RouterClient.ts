@@ -1,12 +1,22 @@
 import { RouterConfig } from '../config/RouterConfig';
 
 export class RouterClient {
-    public async send(prompt: string): Promise<string> {
+    private lastHealthCheck = 0;
+    private healthy = false;
+
+    private async checkHealth(): Promise<boolean> {
+        const now = Date.now();
+        if (now - this.lastHealthCheck < 30000) return this.healthy;
         const healthUrl = RouterConfig.baseUrl.replace('/v1/chat/completions', '/health');
         const health = await fetch(healthUrl).catch(function () { return null; });
-        if (health === null || health.ok === false) {
-            throw new Error("9router indisponivel (falha na checagem de saude).");
-        }
+        this.healthy = health !== null && health.ok === true;
+        this.lastHealthCheck = now;
+        return this.healthy;
+    }
+
+    public async send(prompt: string): Promise<string> {
+        const ok = await this.checkHealth();
+        if (!ok) throw new Error("9router indisponivel (falha na checagem de saude).");
 
         const response = await fetch(RouterConfig.baseUrl, {
             method: "POST",

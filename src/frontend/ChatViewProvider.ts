@@ -17,6 +17,13 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
         webviewView.webview.options = { enableScripts: true };
         const htmlPath = vscode.Uri.joinPath(this.extensionUri, 'src', 'frontend', 'chatView.html');
         webviewView.webview.html = fs.readFileSync(htmlPath.fsPath, 'utf-8');
+
+        setTimeout(() => {
+            const past = this.harness.getHistory();
+            for (const turn of past) {
+                webviewView.webview.postMessage({ type: 'response', text: turn.content, who: turn.role === 'user' ? 'user' : 'ai' });
+            }
+        }, 300);
         logChannel.appendLine(`[ABRIR] Sidebar carregada em ${Date.now() - startOpen}ms`);
         logChannel.show(true);
 
