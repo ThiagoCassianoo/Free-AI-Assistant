@@ -4,6 +4,7 @@ import { RouterClient } from './RouterClient';
 import { ProjectContext } from './ProjectContext';
 import { TerminalExecutor } from './TerminalExecutor';
 import { FileEditor } from './FileEditor';
+import { CodeSearch } from './CodeSearch';
 
 interface ChatTurn { role: string; content: string; }
 
@@ -13,15 +14,20 @@ export class UnifiedHarness {
     private projectContext: ProjectContext;
     public terminalExecutor: TerminalExecutor;
     public fileEditor: FileEditor;
+    public codeSearch: CodeSearch;
     private history: ChatTurn[] = [];
     private projectSummaryCache: string | null = null;
+    private storage: vscode.Memento;
 
-    constructor() {
+    constructor(storage: vscode.Memento) {
         this.brainConnector = new BrainConnector();
         this.routerClient = new RouterClient();
         this.projectContext = new ProjectContext();
         this.terminalExecutor = new TerminalExecutor();
         this.fileEditor = new FileEditor();
+        this.codeSearch = new CodeSearch();
+        this.storage = storage;
+        this.history = this.storage.get<ChatTurn[]>('chatHistory', []);
     }
 
     private getActiveEditorContext(): string {

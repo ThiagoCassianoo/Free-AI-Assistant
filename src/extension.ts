@@ -4,7 +4,7 @@ import { registerCommands } from './frontend/commands';
 import { ChatViewProvider } from './frontend/ChatViewProvider';
 
 export function activate(context: vscode.ExtensionContext) {
-    const harness = new UnifiedHarness();
+    const harness = new UnifiedHarness(context.workspaceState);
     registerCommands(context, harness);
 
     const provider = new ChatViewProvider(context.extensionUri, harness);
