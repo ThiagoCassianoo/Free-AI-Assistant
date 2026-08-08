@@ -4,7 +4,7 @@
   "description": "Cérebro de IA integrado com Failover (Gemini + Ollama) e Claude Code System Prompt",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.125.0"
   },
   "main": "./out/extension.js",
   "contributes": {
@@ -42,5 +42,9 @@
     "@types/node": "^26.2.0",
     "@types/vscode": "^1.125.0",
     "typescript": "^7.0.2"
-  }
+  },
+  "activationEvents": [
+    "onView:cerebroIA.chatView",
+    "onCommand:meu-copilot.perguntar"
+  ]
 }

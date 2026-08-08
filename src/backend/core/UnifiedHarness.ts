@@ -2,9 +2,12 @@ import * as vscode from 'vscode';
 import { BrainConnector } from './BrainConnector';
 import { RouterClient } from './RouterClient';
 
+interface ChatTurn { role: string; content: string; }
+
 export class UnifiedHarness {
     private brainConnector: BrainConnector;
     private routerClient: RouterClient;
+    private history: ChatTurn[] = [];
 
     constructor() {
         this.brainConnector = new BrainConnector();
@@ -22,7 +25,13 @@ export class UnifiedHarness {
 
     public async runTask(userPrompt: string): Promise<string> {
         const context = this.getActiveEditorContext();
-        const payload = this.brainConnector.buildPayload(userPrompt, context);
-        return this.routerClient.send(payload);
+        const payload = this.brainConnector.buildPayload(userPrompt, context, this.history);
+        const response = await this.routerClient.send(payload);
+
+        this.history.push({ role: 'user', content: userPrompt });
+        this.history.push({ role: 'assistant', content: response });
+        if (this.history.length > 12) this.history = this.history.slice(-12);
+
+        return response;
     }
 }

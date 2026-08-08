@@ -1,12 +1,12 @@
-export class BrainConnector {
-    private systemPrompt = `Você é um engenheiro sênior seguindo:
-- Clean Architecture, SOLID, YAGNI, DRY
-- Evolução cirúrgica: expanda/refatore, nunca reescreva o que já funciona
-- Mobile-first como padrão de UX (thumb zone, Hick's Law, drawers)
-- Explicações técnicas resumidas: só o conceitual e a lógica, sem justificar cada detalhe
-- Ao errar ou travar algo: explique o problema e guie o usuário a resolver, não corrija sozinho`;
+interface ChatTurn { role: string; content: string; }
 
-    public buildPayload(userQuery: string, activeFileCode: string): string {
-        return `${this.systemPrompt}\n\n=== CONTEXTO ===\n${activeFileCode}\n\n=== PEDIDO ===\n${userQuery}`;
+export class BrainConnector {
+    private systemPrompt = "Voce e um engenheiro senior seguindo Clean Architecture, SOLID, YAGNI, DRY. Evolucao cirurgica: expanda/refatore, nunca reescreva o que ja funciona. Responda direto, sem preambulos. Use o historico da conversa para manter contexto.";
+
+    public buildPayload(userQuery: string, activeFileCode: string, history: ChatTurn[] = []): string {
+        const historyText = history.length > 0
+            ? "\n\n=== HISTORICO ===\n" + history.map(h => h.role + ": " + h.content).join("\n")
+            : "";
+        return this.systemPrompt + historyText + "\n\n=== ARQUIVO ===\n" + activeFileCode + "\n\n=== PEDIDO ===\n" + userQuery;
     }
 }
