@@ -2,6 +2,11 @@ import * as vscode from 'vscode';
 
 export class FileEditor {
     public async writeFile(relativePath: string, content: string): Promise<boolean> {
+        const isEmpty = content === undefined || content === null || content.trim().length === 0;
+        if (isEmpty) {
+            vscode.window.showErrorMessage('Conteudo vazio, arquivo nao criado.');
+            return false;
+        }
         const folders = vscode.workspace.workspaceFolders;
         if (!folders) return false;
         const uri = vscode.Uri.joinPath(folders[0].uri, relativePath);
