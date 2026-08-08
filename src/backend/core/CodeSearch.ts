@@ -17,6 +17,18 @@ export class CodeSearch {
             }
             if (matches.length >= 15) break;
         }
-        return matches.length > 0 ? "Ocorrências de \"" + term + "\":\n" + matches.join('\n') : "Nenhuma ocorrência de \"" + term + "\" encontrada.";
+        return matches.length > 0 ? "Ocorrencias de \"" + term + "\":\n" + matches.join('\n') : "Nenhuma ocorrencia de \"" + term + "\" encontrada.";
+    }
+
+    public async readFile(relativePath: string): Promise<string> {
+        const folders = vscode.workspace.workspaceFolders;
+        if (!folders) return "Nenhum workspace aberto.";
+        const uri = vscode.Uri.joinPath(folders[0].uri, relativePath);
+        try {
+            const bytes = await vscode.workspace.fs.readFile(uri);
+            return Buffer.from(bytes).toString('utf-8').slice(0, 5000);
+        } catch (error) {
+            return "Arquivo nao encontrado: " + relativePath;
+        }
     }
 }
