@@ -1,12 +1,14 @@
 import * as vscode from 'vscode';
 import { BrainConnector } from './BrainConnector';
-import { RouterConfig } from '../config/RouterConfig';
+import { RouterClient } from './RouterClient';
 
 export class UnifiedHarness {
     private brainConnector: BrainConnector;
+    private routerClient: RouterClient;
 
     constructor() {
         this.brainConnector = new BrainConnector();
+        this.routerClient = new RouterClient();
     }
 
     private getActiveEditorContext(): string {
@@ -21,22 +23,6 @@ export class UnifiedHarness {
     public async runTask(userPrompt: string): Promise<string> {
         const context = this.getActiveEditorContext();
         const payload = this.brainConnector.buildPayload(userPrompt, context);
-
-        const response = await fetch(RouterConfig.baseUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${RouterConfig.apiKey}`
-            },
-            body: JSON.stringify({
-                model: RouterConfig.model,
-                stream: false,
-                messages: [{ role: "user", content: payload }]
-            })
-        });
-
-        if (!response.ok) throw new Error("9router indisponível. Verifique se está rodando.");
-        const data = await response.json() as any;
-        return data.choices[0].message.content;
+        return this.routerClient.send(payload);
     }
 }
