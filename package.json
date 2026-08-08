@@ -13,7 +13,25 @@
         "command": "meu-copilot.perguntar",
         "title": "Cérebro IA: Fazer Pergunta/Solicitação"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cerebroIA",
+          "title": "Cérebro IA",
+          "icon": "$(hubot)"
+        }
+      ]
+    },
+    "views": {
+      "cerebroIA": [
+        {
+          "type": "webview",
+          "id": "cerebroIA.chatView",
+          "name": "Chat"
+        }
+      ]
+    }
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
