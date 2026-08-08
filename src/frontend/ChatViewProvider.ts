@@ -26,6 +26,14 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
                 vscode.window.showErrorMessage('Erro no chat: ' + msg.text);
                 return;
             }
+            if (msg.type === 'runCommand') {
+                await this.harness.terminalExecutor.runWithConfirmation(msg.command);
+                return;
+            }
+            if (msg.type === 'writeFile') {
+                await this.harness.fileEditor.writeFile(msg.path, msg.content);
+                return;
+            }
             if (msg.type === 'ask') {
                 const start = Date.now();
                 logChannel.appendLine(`[PERGUNTA] "${msg.text}"`);
